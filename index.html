@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>自动全屏视频</title>
     <style>
-        /* 确保页面和视频铺满整个屏幕 */
+        /* 确保 body 和 html 占满整个页面 */
         html, body {
             margin: 0;
             padding: 0;
@@ -13,39 +13,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: black;
+            background-color: #000;
         }
-
-        /* 设置视频响应式适配所有屏幕 */
+        
+        /* 视频响应式设计 */
         video {
-            width: 100vw;  /* 设置视频宽度为视口宽度 */
-            height: 100vh; /* 设置视频高度为视口高度 */
-            object-fit: cover; /* 确保视频按比例缩放并铺满屏幕 */
-            position: absolute; /* 使视频占据整个屏幕 */
-            top: 0;
-            left: 0;
-        }
-
-        h1 {
-            color: white;
-            text-align: center;
-            position: relative;
-            z-index: 2; /* 确保提示信息不被视频遮盖 */
-        }
-
-        /* 对于较小的设备（如手机）进行响应式优化 */
-        @media (max-width: 768px) {
-            video {
-                width: 100vw;
-                height: 100vh;
-            }
-        }
-
-        @media (orientation: landscape) {
-            video {
-                width: 100vw;
-                height: 100vh;
-            }
+            max-width: 100%;
+            max-height: 100%;
+            width: 100%;
+            height: auto;
         }
     </style>
 </head>
@@ -92,6 +68,27 @@
         video.addEventListener('click', function() {
             openFullscreen(); // 点击视频时，重新进入全屏
         });
+
+        // 监听屏幕旋转事件
+        window.addEventListener('orientationchange', function() {
+            adjustVideoSize();
+        });
+
+        // 根据屏幕方向调整视频尺寸
+        function adjustVideoSize() {
+            if (window.orientation === 0 || window.orientation === 180) {
+                // 竖屏模式
+                video.style.width = '100%';
+                video.style.height = 'auto';
+            } else if (window.orientation === 90 || window.orientation === -90) {
+                // 横屏模式
+                video.style.height = '100%';
+                video.style.width = 'auto';
+            }
+        }
+
+        // 初始化调整视频尺寸
+        adjustVideoSize();
     </script>
 </body>
 </html>
